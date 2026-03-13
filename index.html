@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bachué AI - Showroom Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .agent-glow-a { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        .agent-glow-b { box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); }
+    </style>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:_ApprovalStatus msdt:dt="string">0</mso:_ApprovalStatus>
+<mso:_ApprovalAssignedTo msdt:dt="string"></mso:_ApprovalAssignedTo>
+<mso:_ApprovalRespondedBy msdt:dt="string"></mso:_ApprovalRespondedBy>
+<mso:_ApprovalSentBy msdt:dt="string"></mso:_ApprovalSentBy>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
+    <header class="p-6 border-b border-slate-700 flex justify-between items-center">
+        <h1 class="text-2xl font-bold tracking-tighter text-blue-400">BACHUÉ <span class="text-slate-400 font-light">| AI Triage</span></h1>
+        <div class="flex gap-4 items-center">
+            <button id="toggle-audio" class="p-2 bg-slate-800 border border-slate-600 rounded-full hover:bg-slate-700 transition-colors" title="Activar/Desactivar Asistente de Voz">
+                🔊
+            </button>
+            <div class="px-4 py-1 bg-blue-500/20 border border-blue-500/50 rounded-full text-xs animate-pulse">LIVE SHOWROOM MODE</div>
+        </div>
+    </header>
+
+    <main class="p-4 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100-100px)]">
+        
+        <section class="lg:col-span-3 flex flex-col gap-4">
+            <div class="glass-panel border border-blue-500/30 p-4 rounded-xl h-full flex flex-col">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                    <h2 class="font-semibold">Agente A: Analista</h2>
+                </div>
+                <div id="agent-a-logs" class="text-sm space-y-4 overflow-y-auto flex-grow text-slate-300">
+                    </div>
+            </div>
+        </section>
+
+        <section class="lg:col-span-6 flex flex-col gap-6">
+            <div class="bg-white text-slate-900 p-6 rounded-xl shadow-2xl h-1/2 overflow-y-auto" id="medical-history">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 border-b pb-2">Historia Clínica del Paciente</h3>
+                <div id="patient-data" class="leading-relaxed italic">
+                    </div>
+            </div>
+
+            <div class="glass-panel border border-emerald-500/30 p-6 rounded-xl h-1/2 overflow-y-auto">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 border-b border-emerald-500/20 pb-2">Plan Médico Sugerido (Acuerdo Final)</h3>
+                <div id="final-plan" class="space-y-3">
+                    <p class="text-slate-500 text-sm">Esperando consenso entre agentes...</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="lg:col-span-3 flex flex-col gap-4">
+            <div class="glass-panel border border-red-500/30 p-4 rounded-xl h-full flex flex-col">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <h2 class="font-semibold">Agente B: Validador</h2>
+                </div>
+                <div id="agent-b-logs" class="text-sm space-y-4 overflow-y-auto flex-grow text-slate-300">
+                    </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="fixed bottom-0 w-full p-4 flex justify-center bg-slate-900/80">
+        <button id="start-demo" class="bg-blue-600 hover:bg-blue-500 px-8 py-3 rounded-lg font-bold transition-all transform hover:scale-105">
+            Iniciar Simulación de Triage
+        </button>
+    </footer>
+
+    <select id="case-selector" class="bg-slate-800 border border-slate-700 rounded px-4 py-2 mr-4 text-sm">
+        <option value="CASE_001">Caso 001: Chikunguya</option>
+        <option value="CASE_002">Caso 002: Oncología</option>
+        <option value="CASE_003">Caso 003: Glioblastoma</option>
+        </select>
+
+    <div id="viz-container" class="hidden fixed inset-0 z-50 bg-slate-900/95 flex flex-col items-center justify-center p-10">
+        <div class="max-w-4xl w-full">
+            <button onclick="document.getElementById('viz-container').classList.add('hidden')" class="mb-4 text-white font-bold bg-red-600 px-4 py-2 rounded">CERRAR VISUALIZACIÓN</button>
+            <img id="asset-viewer" src="" class="w-full rounded-xl shadow-2xl border-4 border-slate-700">
+        </div>
+    </div>
+
+    <script src="registry.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
