@@ -83,7 +83,7 @@ function startSimulation() {
     // Cargar narrativa y audio inicial
     originalNarrative = activeCase.patient.narrative;
     document.getElementById('patient-data').innerText = originalNarrative;
-    speakNarrative("Historia clínica del paciente: " + originalNarrative, 'neutral');
+    speakNarrative("Contexto del sector a evaluar: " + originalNarrative, 'neutral');
     
     currentStep = 0;
     
@@ -129,7 +129,7 @@ function finalizeSimulation(plan) {
     
     const container = document.getElementById('final-plan');
     container.innerHTML = "";
-    speakNarrative("Consenso alcanzado. Plan médico sugerido: " + plan.join(". "), 'neutral');
+    speakNarrative("Consenso alcanzado. Hoja de ruta estratégica sugerida: " + plan.join(". "), 'neutral');
 
     plan.forEach((item, i) => {
         setTimeout(() => {
@@ -151,11 +151,11 @@ function resetUI() {
     document.getElementById('agent-a-logs').innerHTML = '';
     document.getElementById('agent-b-logs').innerHTML = '';
     document.getElementById('final-plan').innerHTML = '<p class="text-slate-500">Esperando consenso entre agentes...</p>';
-    document.getElementById('patient-data').innerText = 'Seleccione un caso del menú y presione "Iniciar Simulación de Triage" para comenzar la lectura...';
+    document.getElementById('patient-data').innerText = 'Active el audio y luego seleccione un caso del menú desplegable. Seguido oprima el botón "Iniciar Simulación" para comenzar la lectura...';
     
     // Restaurar estilo del botón
     const btn = document.getElementById('start-demo');
-    btn.innerText = "Iniciar Simulación de Triage";
+    btn.innerText = "Iniciar Simulación";
     btn.disabled = false;
     btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
     btn.classList.add('bg-blue-600', 'hover:bg-blue-500');

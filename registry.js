@@ -6,130 +6,110 @@
 const BachueRegistry = {
     "CASE_001": {
         "metadata": {
-            "title": "Síndrome Febril en Entorno de Deforestación",
-            "region": "Zona Rural - Colombia"
+            "title": "Sector Agropecuario (AgroTech)",
+            "region": "Territorio Nacional",
+            "complexity": "Alta"
         },
         "patient": {
-            "age": "28 años",
-            "narrative": "Paciente masculino, trabajador agrícola, procedente de una zona rural con reciente y severa deforestación. Presenta cuadro febril agudo de 4 días de evolución, mialgias y cefalea. El episodio ocurre durante un año con declaratoria de fenómeno de El Niño, registrando altas temperaturas máximas en la región."
+            "age": "Sector Primario",
+            "narrative": "El sector agrícola enfrenta retos críticos de productividad y adaptación al cambio climático. Existe una necesidad urgente de optimizar las cosechas, monitorear el rendimiento de los terrenos en tiempo real y mitigar los riesgos de pérdida de cultivos debido a variaciones climáticas impredecibles."
         },
         "interactions": [
             {
                 "agent": "A",
-                "content": "Detecto un cuadro febril agudo. Considerando el contexto climático, el fenómeno de El Niño se asoció con un aumento significativo en la incidencia de dengue. Mi hipótesis principal es Dengue clásico.",
-                "target": "fenómeno de El Niño",
-                "asset": "assets/img/figure2-nino-incidence.png"
+                "content": "Analizando las variables del sector primario. Propongo la implementación de un ecosistema de Agricultura de Precisión. Esto implica el despliegue de sensores IoT en los cultivos y el análisis de Big Data para optimizar la toma de decisiones sobre riego y fertilización.",
+                "target": "optimizar las cosechas",
+                "asset": "assets/img/agro-sensores.png"
             },
             {
                 "agent": "B",
-                "content": "Cuidado con el sesgo urbano. El paciente proviene de una zona con pérdida de bosque. El estudio de Olivera demuestra que la deforestación se asoció significativamente con la malaria. Además, la temperatura máxima mostró una relación positiva con esta enfermedad.",
-                "target": "zona rural con reciente y severa deforestación",
-                "asset": "assets/img/figure4-random-forest.png"
+                "content": "La recolección de datos es el primer paso, pero sugiero ir más allá hacia la Economía Algorítmica. Podemos diseñar agentes autónomos, como drones equipados con visión computacional, para la inspección automatizada. Esto transforma el dato en acción preventiva inmediata.",
+                "target": "rendimiento de los terrenos en tiempo real",
+                "asset": "assets/img/agro-drones.png"
             },
             {
                 "agent": "A",
-                "content": "Punto válido. La pérdida de cobertura vegetal crea hábitats más adecuados para los vectores Anopheles, alterando su comportamiento y facilitando el contacto humano. Reajustando probabilidades diagnósticas.",
-                "target": "trabajador agrícola",
-                "asset": null
-            },
-            {
-                "agent": "B",
-                "content": "Exacto. Como se requiere un enfoque bimodal, el cambio climático y la deforestación impactan la epidemiología de estas enfermedades simultáneamente. Sugiero pruebas de descarte para ambas.",
-                "target": "cuadro febril agudo",
+                "content": "Comprendo el punto. Si conectamos las imágenes de los drones con nuestros laboratorios de innovación y prototipado, podemos entrenar modelos predictivos específicos para la topografía colombiana, garantizando un aumento medible en la productividad.",
+                "target": "mitigar los riesgos de pérdida",
                 "asset": null
             }
         ],
         "plan": [
-            "1. Realizar prueba de gota gruesa para diagnóstico de Malaria.",
-            "2. Solicitar cuadro hemático y prueba rápida de antígeno NS1 para Dengue.",
-            "3. Notificación obligatoria al SIVIGILA según lineamientos del Instituto Nacional de Salud.",
-            "4. Evaluar uso de toldillos en el lugar de residencia del trabajador."
+            "1. Despliegue de red de sensores IoT y captura de imágenes satelitales/drones en zonas agrícolas piloto.",
+            "2. Entrenamiento de modelos de Machine Learning en los Centros de IA para predecir anomalías climáticas y plagas.",
+            "3. Transferencia de conocimiento tecnológico a los agricultores mediante programas de formación en el Centro de IA."
         ]
     },
     "CASE_002": {
         "metadata": {
-            "title": "Evaluación Financiera y Clínica en Oncología",
-            "region": "Región Caribe - Colombia",
-            "complexity": "Alta"
+            "title": "Gestión de Biodiversidad (Bio & NatureTech)",
+            "region": "Regiones Ricas en Biodiversidad",
+            "complexity": "Media-Alta"
         },
         "patient": {
-            "age": "56 años",
-            "narrative": "Paciente femenina de 56 años con diagnóstico reciente de cáncer de mama en estadio clínico IV. Requiere inicio urgente de esquema de quimioterapia. Su entidad aseguradora se encuentra evaluando la viabilidad y el impacto económico del tratamiento integral."
+            "age": "Medio Ambiente",
+            "narrative": "Colombia es el segundo país más biodiverso del mundo, pero la catalogación, protección y el aprovechamiento sostenible de estas especies (bioeconomía) es un proceso manual, lento y costoso, lo que retrasa la investigación científica y la protección de ecosistemas vulnerables."
         },
         "interactions": [
             {
                 "agent": "A",
-                "content": "Detecto una paciente de 56 años con cáncer de mama en estadio clínico IV. La administración de quimioterapia y la hospitalización son los servicios más utilizados y con mayor participación en el costo del tratamiento oncológico. El impacto económico para el sistema será muy elevado.",
-                "target": "quimioterapia",
-                "asset": null
+                "content": "Para acelerar la catalogación, sugiero desplegar Redes Neuronales Convolucionales (CNN). Estas redes pueden analizar miles de imágenes de cámaras trampa y drones en segundos, identificando y clasificando especies de flora y fauna con una precisión superior al ojo humano.",
+                "target": "catalogación, protección",
+                "asset": "assets/img/bio-cnn.png"
             },
             {
                 "agent": "B",
-                "content": "Es una candidata ideal para derivación. La participación de los pacientes con cáncer de mama en los estudios clínicos representó el 24% del total de los ahorros para el sistema. Además, las mujeres entre los 55 y los 59 años generaron el mayor nivel de ahorro por paciente.",
-                "target": "56 años",
-                "asset": "assets/img/figura1-ahorros-edad.png"
+                "content": "Excelente iniciativa para el monitoreo. Sin embargo, para impulsar la bioeconomía, propongo complementar con Redes Generativas Antagónicas (GAN). Las GAN pueden simular escenarios de impacto ambiental o predecir el comportamiento molecular de plantas para descubrir nuevas aplicaciones farmacológicas o cosméticas.",
+                "target": "aprovechamiento sostenible",
+                "asset": "assets/img/bio-gan.png"
             },
             {
                 "agent": "A",
-                "content": "Interesante aproximación. Analizando los datos, los pacientes clasificados en el estadio clínico IV representaron el 41,7% del total ahorrado al Sistema General de Seguridad Social en Salud. La investigación clínica contribuye al uso eficiente de los recursos sin menoscabar la oportunidad y la calidad de la atención.",
-                "target": "estadio clínico IV",
-                "asset": null
-            },
-            {
-                "agent": "B",
-                "content": "Exacto. Además de la mitigación de costos, los participantes reciben beneficios no económicos directos, como el acceso rápido a medicamentos innovadores. El triage debe priorizar la remisión a investigación clínica.",
-                "target": "evaluando la viabilidad",
+                "content": "Consenso alcanzado. La combinación de CNN para identificación en campo y GAN para simulaciones de bioeconomía en los Centros de IA creará un ecosistema completo de protección y desarrollo sostenible.",
+                "target": "investigación científica",
                 "asset": null
             }
         ],
         "plan": [
-            "1. Derivación inmediata a la Unidad de Estudios Clínicos Oncológicos.",
-            "2. Evaluación de criterios de elegibilidad para inclusión en un estudio clínico fase III patrocinado.",
-            "3. Suspensión de la facturación al sistema de salud por los medicamentos y procedimientos cubiertos por el patrocinador.",
-            "4. Acompañamiento psicológico para inicio de tratamiento innovador."
+            "1. Integración de bases de datos de institutos de investigación (Humboldt, SINCHI) al clúster de TPU del Centro de IA.",
+            "2. Entrenamiento de la red CNN para identificación automática de biodiversidad nacional.",
+            "3. Simulación de compuestos de bioeconomía mediante modelos GAN para el sector farmacéutico e industrial."
         ]
     },
     "CASE_003": {
         "metadata": {
-            "title": "Triage Neurooncológico - Glioblastoma",
-            "region": "Global/Referencia",
-            "complexity": "Muy Alta"
+            "title": "Fortalecimiento de la Educación (EdTech)",
+            "region": "Localidades y Zonas Rurales",
+            "complexity": "Media"
         },
         "patient": {
-            "age": "64 años",
-            "narrative": "Paciente masculino de 64 años presenta cuadro de cefalea severa progresiva y alteraciones neurológicas focales de 3 meses de evolución. Los síntomas progresaron rápidamente y el cuadro fue inicialmente sospechado como un accidente cerebrovascular. La resonancia magnética (RM) muestra una lesión hiperintensa en el lóbulo parietal compatible con un glioma de alto grado."
+            "age": "Sector Educativo",
+            "narrative": "Existe una brecha significativa en la calidad de la educación y el acceso a tecnologías emergentes entre las zonas urbanas principales y las localidades periféricas. Las prácticas de enseñanza tradicionales no logran mantener el compromiso de los estudiantes hacia las áreas STEM."
         },
         "interactions": [
             {
                 "agent": "A",
-                "content": "Analizando el caso. El paciente presenta una lesión compatible con glioblastoma multiforme, el tumor cerebral primario más agresivo y maligno en adultos. El cuidado estándar exige la resección quirúrgica máxima seguida de radioterapia y quimioterapia con Temozolomida.",
-                "target": "lesión hiperintensa en el lóbulo parietal",
-                "asset": "assets/img/figure1-mri-glioblastoma.png"
+                "content": "El análisis indica una desconexión. El uso de sistemas de IA permitirá acercar la tecnología a más estudiantes, mejorando la calidad y reforzando la motivación. Propongo plataformas de tutoría inteligente adaptativa.",
+                "target": "brecha significativa en la calidad",
+                "asset": "assets/img/edu-plataforma.png"
             },
             {
                 "agent": "B",
-                "content": "De acuerdo con el diagnóstico, pero para el manejo local sugiero evaluar la Radiocirugía Estereotáctica con Gamma Knife (GKRS). Esta técnica entrega radiación de baja energía de forma precisa, induciendo la destrucción del tejido tumoral y preservando el tejido cerebral sano circundante.",
-                "target": "resección quirúrgica máxima",
-                "asset": "assets/img/figure2-mri-planning.png"
+                "content": "Es correcto, pero la infraestructura física es vital. Los Centros de IA deben actuar como ejes articuladores. Proveer espacios de visualización, realidad virtual y laboratorios de robótica logrará una inmersión total que innove las prácticas de aprendizaje.",
+                "target": "acceso a tecnologías emergentes",
+                "asset": "assets/img/edu-laboratorios.png"
             },
             {
                 "agent": "A",
-                "content": "Precaución. Aunque la GKRS es una opción no invasiva, el glioblastoma tiene una naturaleza altamente infiltrativa con márgenes poco claros. Además, la GKRS conlleva riesgos potenciales como la necrosis por radiación y hemorragia periférica.",
-                "target": "preservando el tejido cerebral sano",
-                "asset": null
-            },
-            {
-                "agent": "B",
-                "content": "Punto válido. Sin embargo, su eficacia está comprobada. Un plan integral que incluya el uso de ácido 5-aminolevulínico (5-ALA) para maximizar la resección inicial identificando el tejido mediante fluorescencia, seguido de GKRS, podría optimizar la supervivencia.",
-                "target": "naturaleza altamente infiltrativa",
+                "content": "Acuerdo total. La combinación de IA en software educativo y hardware inmersivo en los Centros de IA acelerará el progreso de los estudiantes y fomentará una nueva generación de talento digital colombiano.",
+                "target": "áreas STEM",
                 "asset": null
             }
         ],
         "plan": [
-            "1. Confirmación histológica mediante resección quirúrgica máxima guiada por fluorescencia (5-ALA).",
-            "2. Inicio de protocolo estándar con radioterapia y quimioterapia (Temozolomida).",
-            "3. Planificación de Radiocirugía Estereotáctica Gamma Knife (GKRS) para tratar de manera localizada el tejido residual.",
-            "4. Monitoreo estricto con RM para vigilar signos de necrosis por radiación o hemorragia periférica."
+            "1. Implementación de programas de formación técnica y tecnológica en programación y ciencia de datos desde el Centro de IA.",
+            "2. Despliegue de tutores virtuales basados en IA Generativa para personalización del aprendizaje.",
+            "3. Creación de laboratorios de robótica e internet de las cosas (IoT) para experimentación práctica de estudiantes."
         ]
     }
 };

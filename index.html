@@ -22,7 +22,7 @@
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
     <header class="p-6 border-b border-slate-700 flex justify-between items-center">
-        <h1 class="text-2xl font-bold tracking-tighter text-blue-400">BACHUÉ <span class="text-slate-400 font-light">| AI Triage</span></h1>
+        <h1 class="text-2xl font-bold tracking-tighter text-blue-400">TSG <span class="text-slate-400 font-light">| Simulador</span></h1>
         <div class="flex gap-4 items-center">
             <button id="toggle-audio" class="p-2 bg-slate-800 border border-slate-600 rounded-full hover:bg-slate-700 transition-colors" title="Activar/Desactivar Asistente de Voz">
                 🔊
@@ -46,13 +46,13 @@
 
         <section class="lg:col-span-6 flex flex-col gap-6">
             <div class="bg-white text-slate-900 p-6 rounded-xl shadow-2xl h-1/2 overflow-y-auto" id="medical-history">
-                <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 border-b pb-2">Historia Clínica del Paciente</h3>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 border-b pb-2">Contexto y Desafío del Sector</h3>
                 <div id="patient-data" class="leading-relaxed italic">
                     </div>
             </div>
 
             <div class="glass-panel border border-emerald-500/30 p-6 rounded-xl h-1/2 overflow-y-auto">
-                <h3 class="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 border-b border-emerald-500/20 pb-2">Plan Médico Sugerido (Acuerdo Final)</h3>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 border-b border-emerald-500/20 pb-2">Ruta Estratégica (Consenso)</h3>
                 <div id="final-plan" class="space-y-3">
                     <p class="text-slate-500 text-sm">Esperando consenso entre agentes...</p>
                 </div>
@@ -74,14 +74,14 @@
 
     <footer class="fixed bottom-0 w-full p-4 flex justify-center bg-slate-900/80">
         <button id="start-demo" class="bg-blue-600 hover:bg-blue-500 px-8 py-3 rounded-lg font-bold transition-all transform hover:scale-105">
-            Iniciar Simulación de Triage
+            Iniciar Evaluación de IA
         </button>
     </footer>
 
     <select id="case-selector" class="bg-slate-800 border border-slate-700 rounded px-4 py-2 mr-4 text-sm">
-        <option value="CASE_001">Caso 001: Chikunguya</option>
-        <option value="CASE_002">Caso 002: Oncología</option>
-        <option value="CASE_003">Caso 003: Glioblastoma</option>
+        <option value="CASE_001">Caso 001: Sector Agropecuario (AgroTech)</option>
+        <option value="CASE_002">Caso 002: Gestión de Biodiversidad (Bio & NatureTech)</option>
+        <option value="CASE_003">Caso 003: Fortalecimiento de la Educación (EdTech)</option>
         </select>
 
     <div id="viz-container" class="hidden fixed inset-0 z-50 bg-slate-900/95 flex flex-col items-center justify-center p-10">
