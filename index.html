@@ -9,7 +9,7 @@
 </head>
 <body class="bg-slate-950 text-slate-200 min-h-screen flex flex-col font-sans overflow-hidden selection:bg-emerald-500/30">
 
-        <header class="p-6 border-b border-slate-800/50 flex justify-between items-center z-20 bg-slate-950/80 backdrop-blur-sm">
+    <header class="p-6 border-b border-slate-800/50 flex justify-between items-center z-20 bg-slate-950/80 backdrop-blur-sm">
         <div class="flex items-center gap-4">
             <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]"></div>
             <h1 class="text-xl font-light tracking-widest text-slate-300">
@@ -18,7 +18,7 @@
         </div>
         
         <div class="flex items-center gap-4">
-            <select id="case-selector" class="bg-slate-900 border border-slate-700 text-slate-300 text-sm rounded focus:ring-emerald-500 focus:border-emerald-500 block p-2.5 font-light outline-none">
+            <select id="case-selector" class="bg-slate-900 border border-slate-700 text-slate-300 text-sm rounded focus:ring-emerald-500 focus:border-emerald-500 block p-2.5 font-light outline-none cursor-pointer">
                 <option value="CASE_GOV_001">Escenario 1: Despliegue y Apropiación (Showroom)</option>
                 <option value="CASE_GOV_002">Escenario 2: Gobernanza y Privacidad (Ley 1581)</option>
             </select>
@@ -28,7 +28,6 @@
             </button>
         </div>
     </header>
-
 
     <main class="flex-grow relative flex items-center justify-center p-8">
         
@@ -63,8 +62,7 @@
                 
                 <h2 class="text-sm text-slate-400 uppercase tracking-widest mb-4 font-bold border-b border-slate-700 pb-2 relative z-10">Contexto de Estado a Evaluar</h2>
                 <p id="narrative-text" class="text-xl leading-relaxed text-slate-300 font-light relative z-10">
-                    Presione "Iniciar Simulación" para comenzar el análisis de la Malla Soberana Muisca.
-                </p>
+                    </p>
             </div>
 
             <div id="consensus-crystal" class="glass-crystal w-3/4 p-8 rounded-3xl opacity-0 translate-y-10 transition-all duration-1000 ease-out hidden relative overflow-hidden">
@@ -82,7 +80,6 @@
     </main>
 
     <script src="registry.js"></script>
-    <script src="data.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
