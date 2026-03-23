@@ -98,6 +98,7 @@ function triggerConsensus() {
         btnStart.innerText = "Reiniciar Malla";
         btnStart.classList.remove('opacity-50', 'cursor-not-allowed');
     }, 500);
+    caseSelector.disabled = false;
 }
 
 // --- UTILIDADES VISUALES Y DE VOZ ---
