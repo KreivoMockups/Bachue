@@ -21,6 +21,10 @@ const btnStart = document.getElementById('btn-start');
 const consensusCrystal = document.getElementById('consensus-crystal');
 const planContainer = document.getElementById('plan-container');
 const caseSelector = document.getElementById('case-selector');
+const activeThoughtContainer = document.getElementById('active-thought-container');
+const activeAgentName = document.getElementById('active-agent-name');
+const activeThoughtText = document.getElementById('active-thought-text');
+
 
 // --- ACTUALIZACIÓN INMEDIATA DE LA UI AL CAMBIAR DE CASO ---
 function updateNarrativeScreen() {
@@ -48,6 +52,9 @@ btnStart.addEventListener('click', () => {
     consensusCrystal.classList.add('hidden', 'opacity-0', 'translate-y-10');
     planContainer.innerHTML = '';
     
+    activeThoughtContainer.classList.add('hidden');
+    narrativeBox.className = "text-xl leading-relaxed text-slate-300 font-light relative z-10 transition-all duration-700 ease-in-out";
+
     // Iniciar Narrativa
     speakText(activeCase.narrative, 'neutral', () => {
         setTimeout(processNextStep, 800);
@@ -59,7 +66,7 @@ function processNextStep() {
     if (currentStep < activeCase.interactions.length) {
         const interaction = activeCase.interactions[currentStep];
         
-        activateAgentPerimeter(interaction.agent);
+        activateAgentPerimeter(interaction.agent, interaction.content);
         highlightText(interaction.target, interaction.agent);
 
         speakText(interaction.content, interaction.agent, () => {
@@ -75,6 +82,9 @@ function processNextStep() {
 // --- CONSTRUCCIÓN DEL CONSENSO ---
 function triggerConsensus() {
     isSimulationRunning = false;
+    activeThoughtContainer.classList.add('hidden');
+    narrativeBox.className = "text-xl leading-relaxed text-slate-300 font-light relative z-10 transition-all duration-700 ease-in-out";
+
     narrativeBox.innerHTML = activeCase.narrative; // Limpiar subrayados
     fluidPerimeter.className = "absolute inset-0 opacity-0 scale-100 transition-all duration-700 pointer-events-none rounded-xl";
     
@@ -116,17 +126,33 @@ function triggerConsensus() {
     }, 500);
 }
 
-// --- UTILIDADES VISUALES Y DE VOZ ---
-function activateAgentPerimeter(agent) {
+// --- UTILIDADES VISUALES
+function activateAgentPerimeter(agent, content) {
     const pentagon = document.getElementById(`pentagon-${agent}`);
     pentagon.classList.add('speaking');
     
+    // 1. Expandir el perímetro
     fluidPerimeter.className = "absolute inset-0 opacity-100 scale-105 transition-all duration-700 pointer-events-none rounded-xl";
     
+    // 2. Encoger el texto narrativo al fondo (Accesibilidad visual)
+    narrativeBox.className = "text-sm leading-relaxed text-slate-500 font-light relative z-10 transition-all duration-700 ease-in-out line-clamp-3";
+    
+    // 3. Mostrar el contenedor de pensamiento
+    activeThoughtContainer.classList.remove('hidden');
+    activeThoughtText.innerText = `"${content}"`; // Inyectar el texto exacto
+    
     if (agent === 'A') {
+        // Chiminigagua
         fluidPerimeter.classList.add('shadow-[0_0_80px_rgba(249,115,22,0.4),inset_0_0_80px_rgba(249,115,22,0.3)]', 'border-4', 'border-orange-500/80');
+        activeAgentName.innerText = "CHIMINIGAGUA ANALIZA:";
+        activeAgentName.className = "text-xs font-bold tracking-widest mb-2 block text-orange-500 drop-shadow-[0_0_5px_rgba(249,115,22,0.8)]";
+        activeThoughtText.className = "text-2xl font-medium leading-relaxed text-orange-100";
     } else {
+        // Bachué
         fluidPerimeter.classList.add('shadow-[0_0_80px_rgba(6,182,212,0.4),inset_0_0_80px_rgba(6,182,212,0.3)]', 'border-4', 'border-cyan-500/80');
+        activeAgentName.innerText = "BACHUÉ PROPONE:";
+        activeAgentName.className = "text-xs font-bold tracking-widest mb-2 block text-cyan-500 drop-shadow-[0_0_5px_rgba(6,182,212,0.8)]";
+        activeThoughtText.className = "text-2xl font-medium leading-relaxed text-cyan-100";
     }
 }
 
