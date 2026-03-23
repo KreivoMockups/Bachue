@@ -1,48 +1,24 @@
-// --- CASO DE ESTUDIO INTEGRADo ---
-const govCase = {
-    narrative: "El despliegue de la Malla de Soberanía Muisca requiere el procesamiento de volúmenes masivos de información nacional. El desafío crítico es establecer un marco regulatorio que permita entrenar Modelos Fundacionales Soberanos sin vulnerar la privacidad ciudadana, asegurando nuestra posición en el Índice Latinoamericano de IA.",
-    interactions: [
-        { 
-            agent: "A", 
-            content: "Para proteger nuestra biodiversidad, adaptar el territorio al cambio climático y potenciar la bioeconomía, requiero procesar terabytes de datos satelitales. La IA soberana debe clasificar especies a una escala sin precedentes.", 
-            target: "procesamiento de volúmenes masivos"
-        },
-        { 
-            agent: "B", 
-            content: "Esa escala es vital, pero debe equilibrarse. Desde la Salud Pública, mi prioridad es la predicción epidemiológica. Esto exige acceder a historiales clínicos, lo cual es inviable sin un procesamiento anclado en la Ley 1581 de protección de datos.", 
-            target: "vulnerar la privacidad ciudadana"
-        },
-        { 
-            agent: "A", 
-            content: "Comprendo la restricción. No dependeremos de plataformas extranjeras (cajas negras). Para que mi análisis medioambiental y tu análisis clínico converjan de forma segura, necesitamos una barrera de contención técnica y ética en nuestros servidores.", 
-            target: "entrenar Modelos Fundacionales Soberanos"
-        },
-        { 
-            agent: "B", 
-            content: "Consenso estratégico alcanzado. Instauraremos un Comité Interno de Ética. Aplicaremos anonimización profunda para garantizar el Habeas Data, con auditorías continuas validadas por médicos y biólogos para mitigar sesgos.", 
-            target: "marco regulatorio"
-        }
-    ],
-    plan: [
-        "1. Conformación del Comité Interno de Ética y Gobernanza de Datos Multi-Agente.",
-        "2. Implementación de algoritmos de anonimización profunda (Habeas Data / Ley 1581) previos al entrenamiento.",
-        "3. Establecimiento de reportes de transparencia para validación humana de los modelos.",
-        "4. Consolidación de infraestructura soberana para impulsar a Colombia en el ILIA."
-    ]
-};
-
-// --- ESTADOS Y REFERENCIAS AL DOM ---
-let currentStep = 0;
-let isSimulationRunning = false;
+/* app.js */
 const synth = window.speechSynthesis;
+let systemVoices = [];
 
+// Cargar catálogo de voces del OS
+function loadVoices() {
+    systemVoices = synth.getVoices();
+}
+loadVoices();
+if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+// Referencias al DOM
 const narrativeBox = document.getElementById('narrative-text');
 const fluidPerimeter = document.getElementById('fluid-perimeter');
 const btnStart = document.getElementById('btn-start');
 const consensusCrystal = document.getElementById('consensus-crystal');
 const planContainer = document.getElementById('plan-container');
 
-// --- LÓGICA DE SIMULACIÓN ---
+// --- EVENTOS PRINCIPALES ---
 btnStart.addEventListener('click', () => {
     if (isSimulationRunning) return;
     isSimulationRunning = true;
@@ -54,52 +30,52 @@ btnStart.addEventListener('click', () => {
     consensusCrystal.classList.add('hidden', 'opacity-0', 'translate-y-10');
     planContainer.innerHTML = '';
     
-    // Iniciar Narrativa
-    narrativeBox.innerHTML = govCase.narrative;
-    speakText(govCase.narrative, 'neutral', () => {
-        setTimeout(processNextStep, 1000);
+    // Iniciar
+    narrativeBox.innerHTML = activeCase.narrative;
+    speakText(activeCase.narrative, 'neutral', () => {
+        setTimeout(processNextStep, 800);
     });
 });
 
+// --- MOTOR DE SIMULACIÓN ---
 function processNextStep() {
-    if (currentStep < govCase.interactions.length) {
-        const interaction = govCase.interactions[currentStep];
+    if (currentStep < activeCase.interactions.length) {
+        const interaction = activeCase.interactions[currentStep];
         
-        // 1. Efecto Visual de Fluidez de Esencia
+        // 1. Activar Perímetro Visual Intenso
         activateAgentPerimeter(interaction.agent);
         highlightText(interaction.target, interaction.agent);
 
-        // 2. Leer con voz sintética y pasar al siguiente al terminar
+        // 2. Hablar y continuar
         speakText(interaction.content, interaction.agent, () => {
             deactivateAgentPerimeter(interaction.agent);
             currentStep++;
-            setTimeout(processNextStep, 800);
+            setTimeout(processNextStep, 1000); // Pausa dramática entre turnos
         });
     } else {
         triggerConsensus();
     }
 }
 
+// --- CONSTRUCCIÓN DEL CONSENSO ---
 function triggerConsensus() {
     isSimulationRunning = false;
-    narrativeBox.innerHTML = govCase.narrative; // Limpiar subrayados
-    fluidPerimeter.className = "absolute inset-0 opacity-0 transition-all duration-700 pointer-events-none"; // Apagar perímetro
+    narrativeBox.innerHTML = activeCase.narrative;
+    fluidPerimeter.className = "absolute inset-0 opacity-0 scale-100 transition-all duration-700 pointer-events-none rounded-xl";
     
-    // EL MOMENTO DEL ÉXITO: Todos los pentágonos brillan
+    // Todos los pentágonos brillan aprobando la gobernanza
     const pentagons = ['A', 'B', 'Xue', 'Chia', 'Bochica'];
     pentagons.forEach(id => {
         const el = document.getElementById(`pentagon-${id}`);
-        el.classList.add('shadow-[0_0_40px_rgba(255,255,255,0.4)]', 'border-white/60');
-        el.classList.add('scale-110'); // Expansión de aceptación
+        el.classList.add('shadow-[0_0_40px_rgba(255,255,255,0.4)]', 'border-white/60', 'scale-110');
     });
 
-    // Materializar el cristal (Plan)
     consensusCrystal.classList.remove('hidden');
     setTimeout(() => {
         consensusCrystal.classList.remove('opacity-0', 'translate-y-10');
         consensusCrystal.classList.add('opacity-100', 'translate-y-0');
         
-        govCase.plan.forEach((item, i) => {
+        activeCase.plan.forEach((item, i) => {
             setTimeout(() => {
                 const p = document.createElement('p');
                 p.className = "p-3 border-l-2 border-emerald-500/50 bg-slate-800/30 rounded shadow-sm";
@@ -108,31 +84,33 @@ function triggerConsensus() {
             }, i * 800);
         });
 
-        speakText("El consenso ético ha sido materializado en la Malla Soberana.", 'neutral');
-        
-        // Reiniciar botón
+        speakText("El consenso ético ha sido materializado en la Malla Soberana.", 'neutral', () => {});
         btnStart.innerText = "Reiniciar Malla";
         btnStart.classList.remove('opacity-50', 'cursor-not-allowed');
     }, 500);
 }
 
-// --- UTILIDADES VISUALES Y AUDIO ---
+// --- UTILIDADES VISUALES Y DE VOZ ---
 function activateAgentPerimeter(agent) {
     const pentagon = document.getElementById(`pentagon-${agent}`);
     pentagon.classList.add('speaking');
     
-    fluidPerimeter.className = "absolute inset-0 opacity-100 transition-all duration-700 pointer-events-none";
+    // Escala mayor (105) y bordes muy gruesos con sombras gigantes
+    fluidPerimeter.className = "absolute inset-0 opacity-100 scale-105 transition-all duration-700 pointer-events-none rounded-xl";
+    
     if (agent === 'A') {
-        fluidPerimeter.classList.add('shadow-[inset_0_0_50px_rgba(249,115,22,0.3)]', 'border-2', 'border-orange-500/50');
+        // Fuego intenso para Chiminigagua
+        fluidPerimeter.classList.add('shadow-[0_0_80px_rgba(249,115,22,0.4),inset_0_0_80px_rgba(249,115,22,0.3)]', 'border-4', 'border-orange-500/80');
     } else {
-        fluidPerimeter.classList.add('shadow-[inset_0_0_50px_rgba(6,182,212,0.3)]', 'border-2', 'border-cyan-500/50');
+        // Agua intensa para Bachué
+        fluidPerimeter.classList.add('shadow-[0_0_80px_rgba(6,182,212,0.4),inset_0_0_80px_rgba(6,182,212,0.3)]', 'border-4', 'border-cyan-500/80');
     }
 }
 
 function deactivateAgentPerimeter(agent) {
     const pentagon = document.getElementById(`pentagon-${agent}`);
     pentagon.classList.remove('speaking');
-    fluidPerimeter.className = "absolute inset-0 opacity-0 transition-all duration-700 pointer-events-none";
+    fluidPerimeter.className = "absolute inset-0 opacity-0 scale-100 transition-all duration-700 pointer-events-none rounded-xl";
 }
 
 function highlightText(term, agent) {
@@ -142,25 +120,35 @@ function highlightText(term, agent) {
         : 'text-cyan-400 font-bold drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-500';
     
     const regex = new RegExp(`(${term})`, 'gi');
-    narrativeBox.innerHTML = govCase.narrative.replace(regex, `<span class="${highlightClass}">$1</span>`);
+    narrativeBox.innerHTML = activeCase.narrative.replace(regex, `<span class="${highlightClass}">$1</span>`);
 }
 
 function speakText(text, agent, callback) {
-    synth.cancel(); // Detener audios previos
+    synth.cancel(); 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'es-CO'; // Español Colombia
+    utterance.lang = 'es-CO'; 
     
+    if (systemVoices.length > 0) {
+        if (agent === 'A') {
+            const maleVoice = systemVoices.find(v => v.lang.startsWith('es') && (v.name.includes('Pablo') || v.name.includes('Jorge') || v.name.includes('Diego') || v.name.includes('Male')));
+            if (maleVoice) utterance.voice = maleVoice;
+        } else if (agent === 'B') {
+            const femaleVoice = systemVoices.find(v => v.lang.startsWith('es') && (v.name.includes('Helena') || v.name.includes('Sabina') || v.name.includes('Laura') || v.name.includes('Female')));
+            if (femaleVoice) utterance.voice = femaleVoice;
+        }
+    }
+
     if (agent === 'A') {
-        utterance.pitch = 0.8; // Voz grave para el hardware/energía
+        utterance.pitch = 0.4; // Voz muy grave
         utterance.rate = 1.0;
     } else if (agent === 'B') {
-        utterance.pitch = 1.3; // Voz fluida/nítida para el software/agua
+        utterance.pitch = 1.4; // Voz más aguda y fluida
         utterance.rate = 1.05;
     } else {
         utterance.pitch = 1.0;
         utterance.rate = 1.0;
     }
     
-    utterance.onend = callback;
+    if (callback) utterance.onend = callback;
     synth.speak(utterance);
 }
