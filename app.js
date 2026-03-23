@@ -1,6 +1,9 @@
 /* app.js */
 const synth = window.speechSynthesis;
 let systemVoices = [];
+let activeCase = null; // Guardará el caso seleccionado dinámicamente
+let currentStep = 0;
+let isSimulationRunning = false;
 
 // Cargar catálogo de voces del OS
 function loadVoices() {
@@ -17,20 +20,27 @@ const fluidPerimeter = document.getElementById('fluid-perimeter');
 const btnStart = document.getElementById('btn-start');
 const consensusCrystal = document.getElementById('consensus-crystal');
 const planContainer = document.getElementById('plan-container');
+const caseSelector = document.getElementById('case-selector'); // Referencia al menú
 
 // --- EVENTOS PRINCIPALES ---
 btnStart.addEventListener('click', () => {
     if (isSimulationRunning) return;
+    
+    // 1. LEER EL CASO SELECCIONADO DEL MENÚ
+    const selectedKey = caseSelector.value;
+    activeCase = MuiscaRegistry[selectedKey];
+    
     isSimulationRunning = true;
     currentStep = 0;
     
-    // UI Reset
+    // 2. UI Reset
     btnStart.innerText = "Evaluando...";
     btnStart.classList.add('opacity-50', 'cursor-not-allowed');
+    caseSelector.disabled = true; // Bloquea el menú mientras corre la simulación
     consensusCrystal.classList.add('hidden', 'opacity-0', 'translate-y-10');
     planContainer.innerHTML = '';
     
-    // Iniciar
+    // 3. Iniciar Narrativa
     narrativeBox.innerHTML = activeCase.narrative;
     speakText(activeCase.narrative, 'neutral', () => {
         setTimeout(processNextStep, 800);
