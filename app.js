@@ -1,7 +1,7 @@
 /* app.js */
 const synth = window.speechSynthesis;
 let systemVoices = [];
-let activeCase = null; // Guardará el caso seleccionado dinámicamente
+let activeCase = null;
 let currentStep = 0;
 let isSimulationRunning = false;
 
@@ -20,28 +20,35 @@ const fluidPerimeter = document.getElementById('fluid-perimeter');
 const btnStart = document.getElementById('btn-start');
 const consensusCrystal = document.getElementById('consensus-crystal');
 const planContainer = document.getElementById('plan-container');
-const caseSelector = document.getElementById('case-selector'); // Referencia al menú
+const caseSelector = document.getElementById('case-selector');
+
+// --- ACTUALIZACIÓN INMEDIATA DE LA UI AL CAMBIAR DE CASO ---
+function updateNarrativeScreen() {
+    const selectedKey = caseSelector.value;
+    activeCase = MuiscaRegistry[selectedKey];
+    narrativeBox.innerHTML = activeCase.narrative;
+}
+
+// Escuchar cambios en el menú desplegable
+caseSelector.addEventListener('change', updateNarrativeScreen);
+// Cargar el texto del primer caso al abrir la página por primera vez
+updateNarrativeScreen();
+
 
 // --- EVENTOS PRINCIPALES ---
 btnStart.addEventListener('click', () => {
     if (isSimulationRunning) return;
-    
-    // 1. LEER EL CASO SELECCIONADO DEL MENÚ
-    const selectedKey = caseSelector.value;
-    activeCase = MuiscaRegistry[selectedKey];
-    
     isSimulationRunning = true;
     currentStep = 0;
     
-    // 2. UI Reset
+    // UI Reset
     btnStart.innerText = "Evaluando...";
     btnStart.classList.add('opacity-50', 'cursor-not-allowed');
-    caseSelector.disabled = true; // Bloquea el menú mientras corre la simulación
+    caseSelector.disabled = true; // Bloquear menú durante simulación
     consensusCrystal.classList.add('hidden', 'opacity-0', 'translate-y-10');
     planContainer.innerHTML = '';
     
-    // 3. Iniciar Narrativa
-    narrativeBox.innerHTML = activeCase.narrative;
+    // Iniciar Narrativa
     speakText(activeCase.narrative, 'neutral', () => {
         setTimeout(processNextStep, 800);
     });
@@ -52,15 +59,13 @@ function processNextStep() {
     if (currentStep < activeCase.interactions.length) {
         const interaction = activeCase.interactions[currentStep];
         
-        // 1. Activar Perímetro Visual Intenso
         activateAgentPerimeter(interaction.agent);
         highlightText(interaction.target, interaction.agent);
 
-        // 2. Hablar y continuar
         speakText(interaction.content, interaction.agent, () => {
             deactivateAgentPerimeter(interaction.agent);
             currentStep++;
-            setTimeout(processNextStep, 1000); // Pausa dramática entre turnos
+            setTimeout(processNextStep, 1000); 
         });
     } else {
         triggerConsensus();
@@ -70,10 +75,9 @@ function processNextStep() {
 // --- CONSTRUCCIÓN DEL CONSENSO ---
 function triggerConsensus() {
     isSimulationRunning = false;
-    narrativeBox.innerHTML = activeCase.narrative;
+    narrativeBox.innerHTML = activeCase.narrative; // Limpiar subrayados
     fluidPerimeter.className = "absolute inset-0 opacity-0 scale-100 transition-all duration-700 pointer-events-none rounded-xl";
     
-    // Todos los pentágonos brillan aprobando la gobernanza
     const pentagons = ['A', 'B', 'Xue', 'Chia', 'Bochica'];
     pentagons.forEach(id => {
         const el = document.getElementById(`pentagon-${id}`);
@@ -95,10 +99,21 @@ function triggerConsensus() {
         });
 
         speakText("El consenso ético ha sido materializado en la Malla Soberana.", 'neutral', () => {});
+        
+        // Restaurar botones y menús
         btnStart.innerText = "Reiniciar Malla";
         btnStart.classList.remove('opacity-50', 'cursor-not-allowed');
+        caseSelector.disabled = false; // Desbloquear menú para elegir otro caso
+        
+        // Regresar pentágonos a la normalidad después de unos segundos
+        setTimeout(() => {
+            pentagons.forEach(id => {
+                const el = document.getElementById(`pentagon-${id}`);
+                el.classList.remove('shadow-[0_0_40px_rgba(255,255,255,0.4)]', 'border-white/60', 'scale-110');
+            });
+        }, 5000);
+
     }, 500);
-    caseSelector.disabled = false;
 }
 
 // --- UTILIDADES VISUALES Y DE VOZ ---
@@ -106,14 +121,11 @@ function activateAgentPerimeter(agent) {
     const pentagon = document.getElementById(`pentagon-${agent}`);
     pentagon.classList.add('speaking');
     
-    // Escala mayor (105) y bordes muy gruesos con sombras gigantes
     fluidPerimeter.className = "absolute inset-0 opacity-100 scale-105 transition-all duration-700 pointer-events-none rounded-xl";
     
     if (agent === 'A') {
-        // Fuego intenso para Chiminigagua
         fluidPerimeter.classList.add('shadow-[0_0_80px_rgba(249,115,22,0.4),inset_0_0_80px_rgba(249,115,22,0.3)]', 'border-4', 'border-orange-500/80');
     } else {
-        // Agua intensa para Bachué
         fluidPerimeter.classList.add('shadow-[0_0_80px_rgba(6,182,212,0.4),inset_0_0_80px_rgba(6,182,212,0.3)]', 'border-4', 'border-cyan-500/80');
     }
 }
@@ -150,10 +162,10 @@ function speakText(text, agent, callback) {
     }
 
     if (agent === 'A') {
-        utterance.pitch = 0.4; // Voz muy grave
+        utterance.pitch = 0.4; 
         utterance.rate = 1.0;
     } else if (agent === 'B') {
-        utterance.pitch = 1.4; // Voz más aguda y fluida
+        utterance.pitch = 1.4; 
         utterance.rate = 1.05;
     } else {
         utterance.pitch = 1.0;
