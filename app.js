@@ -4,7 +4,11 @@ let systemVoices = [];
 let activeCase = null;
 let currentStep = 0;
 let isSimulationRunning = false;
-let isVoiceEnabled = true; // Control global del sonido
+let isVoiceEnabled = true;
+
+// --- NUEVAS VARIABLES DE CONTROL ANTI-CONGELAMIENTO ---
+let activeSpeechCallback = null; 
+let activeSpeechTimeout = null;
 
 // Cargar catálogo de voces
 function loadVoices() {
@@ -23,7 +27,6 @@ const consensusCrystal = document.getElementById('consensus-crystal');
 const planContainer = document.getElementById('plan-container');
 const caseSelector = document.getElementById('case-selector');
 
-// Referencias del Teleprompter y Botón Voz
 const activeThoughtContainer = document.getElementById('active-thought-container');
 const activeAgentName = document.getElementById('active-agent-name');
 const activeThoughtText = document.getElementById('active-thought-text');
@@ -31,9 +34,10 @@ const btnToggleVoice = document.getElementById('btn-toggle-voice');
 const voiceIcon = document.getElementById('voice-icon');
 const voiceText = document.getElementById('voice-text');
 
-// --- CONTROLADOR DE VOZ ---
+// --- CONTROLADOR DE VOZ (A PRUEBA DE FALLOS) ---
 btnToggleVoice.addEventListener('click', () => {
     isVoiceEnabled = !isVoiceEnabled;
+    
     if (isVoiceEnabled) {
         voiceIcon.innerText = "🔊";
         voiceText.innerText = "Voz Activada";
@@ -44,7 +48,20 @@ btnToggleVoice.addEventListener('click', () => {
         voiceText.innerText = "Voz Silenciada";
         btnToggleVoice.classList.remove('text-slate-200');
         btnToggleVoice.classList.add('opacity-50', 'text-slate-400');
-        synth.cancel(); // Detiene el audio inmediatamente si estaba sonando
+        
+        // 1. Callamos al navegador
+        synth.cancel(); 
+        
+        // 2. FORZAMOS EL AVANCE MANUALMENTE
+        // Si había una función esperando que el audio terminara, la ejecutamos nosotros
+        if (activeSpeechCallback) {
+            clearTimeout(activeSpeechTimeout); // Limpiamos los temporizadores
+            const callback = activeSpeechCallback;
+            activeSpeechCallback = null;
+            
+            // Le damos medio segundo de pausa suave antes de lanzar el siguiente turno
+            setTimeout(callback, 500); 
+        }
     }
 });
 
@@ -181,20 +198,29 @@ function highlightText(term, agent) {
 }
 
 function speakText(text, agent, callback) {
-    synth.cancel(); // Prevenir colisiones de audio
+    synth.cancel(); 
+    clearTimeout(activeSpeechTimeout); // Limpiamos temporizadores anteriores
     
-    // MODO PRESENTADOR: Calcula el tiempo si la voz está silenciada
+    // Guardamos la función callback globalmente para poder llamarla si el usuario presiona "Silenciar"
+    activeSpeechCallback = callback;
+
+    const wordCount = text.split(' ').length;
+
+    // --- MODO SILENCIOSO ---
     if (!isVoiceEnabled) {
-        const wordCount = text.split(' ').length;
         const readingTimeMs = Math.max((wordCount / 200) * 60000 + 1500, 3000); 
         
-        if (callback) {
-            setTimeout(callback, readingTimeMs);
-        }
+        activeSpeechTimeout = setTimeout(() => {
+            if (activeSpeechCallback) {
+                const cb = activeSpeechCallback;
+                activeSpeechCallback = null;
+                cb();
+            }
+        }, readingTimeMs);
         return; 
     }
 
-    // MODO NORMAL: Síntesis de voz
+    // --- MODO CON VOZ ---
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'es-CO'; 
     
@@ -219,16 +245,27 @@ function speakText(text, agent, callback) {
         utterance.rate = 1.0;
     }
     
-    // Manejo de finalización y cancelaciones forzadas
-    if (callback) {
-        utterance.onend = callback;
-        utterance.onerror = function(e) {
-            // Si el usuario presiona "Silenciar" a mitad de la frase, pasamos al siguiente turno.
-            if (e.error === 'canceled' || e.error === 'interrupted') {
-                callback();
-            }
-        };
-    }
+    // Cuando el audio termina naturalmente, llamamos al callback
+    utterance.onend = function() {
+        if (activeSpeechCallback) {
+            clearTimeout(activeSpeechTimeout);
+            const cb = activeSpeechCallback;
+            activeSpeechCallback = null;
+            cb();
+        }
+    };
     
+    // TEMPORIZADOR DE RESCATE (Por si el navegador se queda trabado)
+    // Le damos el tiempo máximo que debería tardar en leer + 4 segundos extra
+    const maxExpectedTimeMs = (wordCount / 100) * 60000 + 4000; 
+    activeSpeechTimeout = setTimeout(() => {
+        if (activeSpeechCallback) {
+            synth.cancel(); // Forzamos apagado
+            const cb = activeSpeechCallback;
+            activeSpeechCallback = null;
+            cb(); // Continuamos la simulación
+        }
+    }, maxExpectedTimeMs);
+
     synth.speak(utterance);
 }
