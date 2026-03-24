@@ -4,6 +4,7 @@ let systemVoices = [];
 let activeCase = null;
 let currentStep = 0;
 let isSimulationRunning = false;
+let isVoiceEnabled = true; // Control global del sonido
 
 // Cargar catálogo de voces
 function loadVoices() {
@@ -21,31 +22,33 @@ const btnStart = document.getElementById('btn-start');
 const consensusCrystal = document.getElementById('consensus-crystal');
 const planContainer = document.getElementById('plan-container');
 const caseSelector = document.getElementById('case-selector');
-const btnToggleVoice = document.getElementById('btn-toggle-voice');
-const voiceIcon = document.getElementById('voice-icon');
-const voiceText = document.getElementById('voice-text');
-let isVoiceEnabled = true;
-// Nuevas referencias para el Teleprompter Socrático
+
+// Referencias del Teleprompter y Botón Voz
 const activeThoughtContainer = document.getElementById('active-thought-container');
 const activeAgentName = document.getElementById('active-agent-name');
 const activeThoughtText = document.getElementById('active-thought-text');
+const btnToggleVoice = document.getElementById('btn-toggle-voice');
+const voiceIcon = document.getElementById('voice-icon');
+const voiceText = document.getElementById('voice-text');
 
-// --- CONTROLADOR DE VOZ (MODO PRESENTADOR) ---
+// --- CONTROLADOR DE VOZ ---
 btnToggleVoice.addEventListener('click', () => {
     isVoiceEnabled = !isVoiceEnabled;
     if (isVoiceEnabled) {
         voiceIcon.innerText = "🔊";
         voiceText.innerText = "Voz Activada";
-        btnToggleVoice.classList.replace('text-slate-500', 'text-slate-300');
+        btnToggleVoice.classList.remove('opacity-50', 'text-slate-400');
+        btnToggleVoice.classList.add('text-slate-200');
     } else {
         voiceIcon.innerText = "🔇";
         voiceText.innerText = "Voz Silenciada";
-        btnToggleVoice.classList.replace('text-slate-300', 'text-slate-500');
-        synth.cancel(); // Detiene cualquier voz que esté sonando en ese instante
+        btnToggleVoice.classList.remove('text-slate-200');
+        btnToggleVoice.classList.add('opacity-50', 'text-slate-400');
+        synth.cancel(); // Detiene el audio inmediatamente si estaba sonando
     }
 });
 
-// Actualización Inmediata al cambiar menú
+// --- ACTUALIZACIÓN AL CAMBIAR DE CASO ---
 function updateNarrativeScreen() {
     const selectedKey = caseSelector.value;
     activeCase = MuiscaRegistry[selectedKey];
@@ -54,23 +57,20 @@ function updateNarrativeScreen() {
 caseSelector.addEventListener('change', updateNarrativeScreen);
 updateNarrativeScreen();
 
-
-// --- EVENTOS PRINCIPALES ---
+// --- EVENTOS DE INICIO ---
 btnStart.addEventListener('click', () => {
     if (isSimulationRunning) return;
     isSimulationRunning = true;
     currentStep = 0;
     
-    // UI Reset completo
     btnStart.innerText = "Evaluando...";
     btnStart.classList.add('opacity-50', 'cursor-not-allowed');
     caseSelector.disabled = true;
     consensusCrystal.classList.add('hidden', 'opacity-0', 'translate-y-10');
     planContainer.innerHTML = '';
     
-    // Resetear Teleprompter y restaurar tamaño del texto
     activeThoughtContainer.classList.add('hidden');
-    narrativeBox.className = "text-xl leading-relaxed text-slate-300 font-light relative z-10 transition-all duration-700 ease-in-out";
+    narrativeBox.className = "text-lg md:text-xl leading-relaxed text-slate-300 font-light relative z-10 transition-all duration-700 ease-in-out";
     
     speakText(activeCase.narrative, 'neutral', () => {
         setTimeout(processNextStep, 800);
@@ -82,7 +82,6 @@ function processNextStep() {
     if (currentStep < activeCase.interactions.length) {
         const interaction = activeCase.interactions[currentStep];
         
-        // Pasamos el agente Y el contenido para el subtítulo
         activateAgentPerimeter(interaction.agent, interaction.content);
         highlightText(interaction.target, interaction.agent);
 
@@ -102,9 +101,8 @@ function triggerConsensus() {
     narrativeBox.innerHTML = activeCase.narrative; 
     fluidPerimeter.className = "absolute inset-0 opacity-0 scale-100 transition-all duration-700 pointer-events-none rounded-xl";
     
-    // Ocultar el teleprompter y restaurar el texto grande
     activeThoughtContainer.classList.add('hidden');
-    narrativeBox.className = "text-xl leading-relaxed text-slate-300 font-light relative z-10 transition-all duration-700 ease-in-out";
+    narrativeBox.className = "text-lg md:text-xl leading-relaxed text-slate-300 font-light relative z-10 transition-all duration-700 ease-in-out";
     
     const pentagons = ['A', 'B', 'Xue', 'Chia', 'Bochica'];
     pentagons.forEach(id => {
@@ -148,24 +146,21 @@ function activateAgentPerimeter(agent, content) {
     pentagon.classList.add('speaking');
     
     fluidPerimeter.className = "absolute inset-0 opacity-100 scale-105 transition-all duration-700 pointer-events-none rounded-xl";
+    narrativeBox.className = "text-sm leading-relaxed text-slate-500 font-light relative z-10 transition-all duration-700 ease-in-out line-clamp-3 md:line-clamp-none";
     
-    // Encoger el texto original (line-clamp lo limita a 3 líneas si es muy largo)
-    narrativeBox.className = "text-sm leading-relaxed text-slate-500 font-light relative z-10 transition-all duration-700 ease-in-out line-clamp-3";
-    
-    // Mostrar el contenedor y el texto de la deidad
     activeThoughtContainer.classList.remove('hidden');
     activeThoughtText.innerText = `"${content}"`;
     
     if (agent === 'A') {
         fluidPerimeter.classList.add('shadow-[0_0_80px_rgba(249,115,22,0.4),inset_0_0_80px_rgba(249,115,22,0.3)]', 'border-4', 'border-orange-500/80');
         activeAgentName.innerText = "CHIMINIGAGUA ANALIZA:";
-        activeAgentName.className = "text-xs font-bold tracking-widest mb-2 block text-orange-500 drop-shadow-[0_0_5px_rgba(249,115,22,0.8)]";
-        activeThoughtText.className = "text-2xl font-medium leading-relaxed text-orange-100";
+        activeAgentName.className = "text-[10px] md:text-xs font-bold tracking-widest mb-2 block text-orange-500 drop-shadow-[0_0_5px_rgba(249,115,22,0.8)]";
+        activeThoughtText.className = "text-xl md:text-2xl font-medium leading-relaxed text-orange-100";
     } else {
         fluidPerimeter.classList.add('shadow-[0_0_80px_rgba(6,182,212,0.4),inset_0_0_80px_rgba(6,182,212,0.3)]', 'border-4', 'border-cyan-500/80');
         activeAgentName.innerText = "BACHUÉ PROPONE:";
-        activeAgentName.className = "text-xs font-bold tracking-widest mb-2 block text-cyan-500 drop-shadow-[0_0_5px_rgba(6,182,212,0.8)]";
-        activeThoughtText.className = "text-2xl font-medium leading-relaxed text-cyan-100";
+        activeAgentName.className = "text-[10px] md:text-xs font-bold tracking-widest mb-2 block text-cyan-500 drop-shadow-[0_0_5px_rgba(6,182,212,0.8)]";
+        activeThoughtText.className = "text-xl md:text-2xl font-medium leading-relaxed text-cyan-100";
     }
 }
 
@@ -186,23 +181,20 @@ function highlightText(term, agent) {
 }
 
 function speakText(text, agent, callback) {
-    synth.cancel(); 
+    synth.cancel(); // Prevenir colisiones de audio
     
-    // Si la voz está desactivada (Modo Presentador/Silencioso)
+    // MODO PRESENTADOR: Calcula el tiempo si la voz está silenciada
     if (!isVoiceEnabled) {
-        // Calculamos el tiempo de lectura (aprox 200 palabras por minuto)
         const wordCount = text.split(' ').length;
-        // Fórmula: (palabras / 200) * 60000 ms + 1.5 segundos de margen
         const readingTimeMs = Math.max((wordCount / 200) * 60000 + 1500, 3000); 
         
-        // Esperamos el tiempo de lectura y luego llamamos al callback
         if (callback) {
             setTimeout(callback, readingTimeMs);
         }
-        return; // Salimos de la función para que no hable
+        return; 
     }
 
-    // Lógica normal de voz sintetizada
+    // MODO NORMAL: Síntesis de voz
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'es-CO'; 
     
@@ -227,7 +219,16 @@ function speakText(text, agent, callback) {
         utterance.rate = 1.0;
     }
     
-    if (callback) utterance.onend = callback;
+    // Manejo de finalización y cancelaciones forzadas
+    if (callback) {
+        utterance.onend = callback;
+        utterance.onerror = function(e) {
+            // Si el usuario presiona "Silenciar" a mitad de la frase, pasamos al siguiente turno.
+            if (e.error === 'canceled' || e.error === 'interrupted') {
+                callback();
+            }
+        };
+    }
+    
     synth.speak(utterance);
 }
-
