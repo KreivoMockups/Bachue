@@ -21,11 +21,29 @@ const btnStart = document.getElementById('btn-start');
 const consensusCrystal = document.getElementById('consensus-crystal');
 const planContainer = document.getElementById('plan-container');
 const caseSelector = document.getElementById('case-selector');
-
+const btnToggleVoice = document.getElementById('btn-toggle-voice');
+const voiceIcon = document.getElementById('voice-icon');
+const voiceText = document.getElementById('voice-text');
+let isVoiceEnabled = true;
 // Nuevas referencias para el Teleprompter Socrático
 const activeThoughtContainer = document.getElementById('active-thought-container');
 const activeAgentName = document.getElementById('active-agent-name');
 const activeThoughtText = document.getElementById('active-thought-text');
+
+// --- CONTROLADOR DE VOZ (MODO PRESENTADOR) ---
+btnToggleVoice.addEventListener('click', () => {
+    isVoiceEnabled = !isVoiceEnabled;
+    if (isVoiceEnabled) {
+        voiceIcon.innerText = "🔊";
+        voiceText.innerText = "Voz Activada";
+        btnToggleVoice.classList.replace('text-slate-500', 'text-slate-300');
+    } else {
+        voiceIcon.innerText = "🔇";
+        voiceText.innerText = "Voz Silenciada";
+        btnToggleVoice.classList.replace('text-slate-300', 'text-slate-500');
+        synth.cancel(); // Detiene cualquier voz que esté sonando en ese instante
+    }
+});
 
 // Actualización Inmediata al cambiar menú
 function updateNarrativeScreen() {
@@ -169,6 +187,22 @@ function highlightText(term, agent) {
 
 function speakText(text, agent, callback) {
     synth.cancel(); 
+    
+    // Si la voz está desactivada (Modo Presentador/Silencioso)
+    if (!isVoiceEnabled) {
+        // Calculamos el tiempo de lectura (aprox 200 palabras por minuto)
+        const wordCount = text.split(' ').length;
+        // Fórmula: (palabras / 200) * 60000 ms + 1.5 segundos de margen
+        const readingTimeMs = Math.max((wordCount / 200) * 60000 + 1500, 3000); 
+        
+        // Esperamos el tiempo de lectura y luego llamamos al callback
+        if (callback) {
+            setTimeout(callback, readingTimeMs);
+        }
+        return; // Salimos de la función para que no hable
+    }
+
+    // Lógica normal de voz sintetizada
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'es-CO'; 
     
@@ -196,3 +230,4 @@ function speakText(text, agent, callback) {
     if (callback) utterance.onend = callback;
     synth.speak(utterance);
 }
+
