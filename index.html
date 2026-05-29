@@ -1,97 +1,95 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malla Soberana Muisca - IA</title>
+    <title>Bachué AI - Showroom Demo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        .agent-glow-a { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        .agent-glow-b { box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); }
+    </style>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:_ApprovalStatus msdt:dt="string">0</mso:_ApprovalStatus>
+<mso:_ApprovalAssignedTo msdt:dt="string"></mso:_ApprovalAssignedTo>
+<mso:_ApprovalRespondedBy msdt:dt="string"></mso:_ApprovalRespondedBy>
+<mso:_ApprovalSentBy msdt:dt="string"></mso:_ApprovalSentBy>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
 </head>
-<body class="bg-slate-950 text-slate-200 min-h-screen flex flex-col font-sans selection:bg-emerald-500/30 overflow-x-hidden">
-
-    <header class="p-4 md:p-6 border-b border-slate-800/50 flex flex-col md:flex-row justify-between items-center gap-4 z-20 bg-slate-950/80 backdrop-blur-sm">
-        
-        <div class="flex items-center gap-3">
-            <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]"></div>
-            <h1 class="text-lg md:text-xl font-light tracking-widest text-slate-300 text-center md:text-left">
-                <strong class="text-white font-bold">MALLA SOBERANA</strong> <span class="hidden md:inline">|</span><br class="md:hidden"> GOBERNANZA DE DATOS
-            </h1>
-        </div>
-        
-        <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
-            
-            <button id="btn-toggle-voice" class="w-full sm:w-auto px-4 py-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs tracking-wider uppercase font-bold rounded transition-all flex items-center justify-center gap-2 outline-none">
-                <span id="voice-icon" class="text-base">🔊</span>
-                <span id="voice-text">Voz Activada</span>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
+    <header class="p-6 border-b border-slate-700 flex justify-between items-center">
+        <h1 class="text-2xl font-bold tracking-tighter text-blue-400">BACHUÉ <span class="text-slate-400 font-light">| AI Triage</span></h1>
+        <div class="flex gap-4 items-center">
+            <button id="toggle-audio" class="p-2 bg-slate-800 border border-slate-600 rounded-full hover:bg-slate-700 transition-colors" title="Activar/Desactivar Asistente de Voz">
+                🔊
             </button>
-
-            <select id="case-selector" class="w-full sm:w-auto bg-slate-900 border border-slate-700 text-slate-300 text-sm rounded focus:ring-emerald-500 focus:border-emerald-500 block p-2.5 font-light outline-none cursor-pointer">
-                <option value="CASE_GOV_001">Escenario 1: Despliegue y Apropiación (Showroom)</option>
-                <option value="CASE_GOV_002">Escenario 2: Gobernanza y Privacidad (Ley 1581)</option>
-            </select>
-
-            <button id="btn-start" class="w-full sm:w-auto px-6 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm tracking-wider uppercase font-bold rounded transition-all shadow-lg hover:shadow-emerald-500/20 whitespace-nowrap">
-                Iniciar Simulación
-            </button>
+            <div class="px-4 py-1 bg-blue-500/20 border border-blue-500/50 rounded-full text-xs animate-pulse">LIVE SHOWROOM MODE</div>
         </div>
-
     </header>
 
-    <main class="flex-grow relative flex items-center justify-center p-4 md:p-8">
+    <main class="p-4 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100-100px)]">
         
-        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40 overflow-hidden">
-            <div id="pentagon-A" class="absolute top-20 left-1/4 w-20 h-20 md:w-32 md:h-32 pentagon-shape border-4 border-orange-500/50 bg-orange-900/20 transition-glow flex items-center justify-center">
-                <span class="text-orange-400 text-[8px] md:text-xs font-bold tracking-widest">CHIMINIGAGUA</span>
-            </div>
-            <div id="pentagon-B" class="absolute top-20 right-1/4 w-20 h-20 md:w-32 md:h-32 pentagon-shape border-4 border-cyan-500/50 bg-cyan-900/20 transition-glow flex items-center justify-center">
-                <span class="text-cyan-400 text-[8px] md:text-xs font-bold tracking-widest">BACHUÉ</span>
-            </div>
-            <div id="pentagon-Xue" class="absolute bottom-20 left-1/4 md:left-1/3 w-16 h-16 md:w-24 md:h-24 pentagon-shape border-2 border-slate-300/30 bg-slate-800/20 transition-glow flex items-center justify-center">
-                <span class="text-slate-400 text-[8px] md:text-[10px] font-bold">XUE</span>
-            </div>
-            <div id="pentagon-Chia" class="absolute bottom-20 right-1/4 md:right-1/3 w-16 h-16 md:w-24 md:h-24 pentagon-shape border-2 border-green-500/30 bg-green-900/20 transition-glow flex items-center justify-center">
-                <span class="text-green-400 text-[8px] md:text-[10px] font-bold">CHÍA</span>
-            </div>
-            <div id="pentagon-Bochica" class="absolute bottom-10 left-1/2 -translate-x-1/2 w-20 h-20 md:w-28 md:h-28 pentagon-shape border-2 border-blue-400/30 bg-blue-900/20 transition-glow flex items-center justify-center">
-                <span class="text-blue-300 text-[8px] md:text-[10px] font-bold">BOCHICA</span>
-            </div>
-            
-            <svg class="absolute inset-0 w-full h-full -z-10 opacity-20" xmlns="http://www.w3.org/2000/svg">
-                <line x1="25%" y1="20%" x2="75%" y2="20%" stroke="currentColor" stroke-width="1" class="text-slate-500"/>
-                <line x1="25%" y1="20%" x2="50%" y2="80%" stroke="currentColor" stroke-width="1" class="text-slate-500"/>
-                <line x1="75%" y1="20%" x2="50%" y2="80%" stroke="currentColor" stroke-width="1" class="text-slate-500"/>
-            </svg>
-        </div>
-
-        <div class="relative z-10 w-full max-w-4xl min-h-[600px] flex flex-col items-center justify-start mt-6 md:mt-0">
-            
-            <div id="analysis-box" class="w-full bg-slate-900/80 border border-slate-700/50 p-6 md:p-8 rounded-xl shadow-2xl transition-all duration-700 min-h-[250px] mb-8 relative overflow-hidden flex flex-col justify-center">
-                <div id="fluid-perimeter" class="absolute inset-0 opacity-0 scale-100 transition-all duration-700 pointer-events-none rounded-xl"></div>
-                
-                <h2 class="text-xs md:text-sm text-slate-400 uppercase tracking-widest mb-4 font-bold border-b border-slate-700 pb-2 relative z-10 shrink-0">Contexto de Estado a Evaluar</h2>
-                
-                <p id="narrative-text" class="text-lg md:text-xl leading-relaxed text-slate-300 font-light relative z-10 transition-all duration-700 ease-in-out">
-                    </p>
-
-                <div id="active-thought-container" class="mt-6 hidden relative z-10 border-t border-slate-700/50 pt-4 md:pt-6 transition-all duration-500">
-                    <span id="active-agent-name" class="text-[10px] md:text-xs font-bold tracking-widest mb-2 block"></span>
-                    <p id="active-thought-text" class="text-xl md:text-2xl font-medium leading-relaxed"></p>
+        <section class="lg:col-span-3 flex flex-col gap-4">
+            <div class="glass-panel border border-blue-500/30 p-4 rounded-xl h-full flex flex-col">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                    <h2 class="font-semibold">Agente A: Analista</h2>
                 </div>
+                <div id="agent-a-logs" class="text-sm space-y-4 overflow-y-auto flex-grow text-slate-300">
+                    </div>
             </div>
+        </section>
 
-            <div id="consensus-crystal" class="glass-crystal w-full md:w-3/4 p-6 md:p-8 rounded-3xl opacity-0 translate-y-10 transition-all duration-1000 ease-out hidden relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white to-transparent opacity-50"></div>
-                
-                <div class="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3 mb-6">
-                    <span class="text-emerald-400 text-2xl hidden md:block">✓</span>
-                    <h3 class="text-lg md:text-2xl font-bold text-white tracking-wider text-center">CONSENSO ÉTICO SOBERANO</h3>
-                </div>
-                <div id="plan-container" class="space-y-4 text-slate-200 text-base md:text-lg font-light max-h-60 overflow-y-auto custom-scrollbar pr-2 md:pr-4">
+        <section class="lg:col-span-6 flex flex-col gap-6">
+            <div class="bg-white text-slate-900 p-6 rounded-xl shadow-2xl h-1/2 overflow-y-auto" id="medical-history">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 border-b pb-2">Historia Clínica del Paciente</h3>
+                <div id="patient-data" class="leading-relaxed italic">
                     </div>
             </div>
 
-        </div>
+            <div class="glass-panel border border-emerald-500/30 p-6 rounded-xl h-1/2 overflow-y-auto">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 border-b border-emerald-500/20 pb-2">Plan Médico Sugerido (Acuerdo Final)</h3>
+                <div id="final-plan" class="space-y-3">
+                    <p class="text-slate-500 text-sm">Esperando consenso entre agentes...</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="lg:col-span-3 flex flex-col gap-4">
+            <div class="glass-panel border border-red-500/30 p-4 rounded-xl h-full flex flex-col">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <h2 class="font-semibold">Agente B: Validador</h2>
+                </div>
+                <div id="agent-b-logs" class="text-sm space-y-4 overflow-y-auto flex-grow text-slate-300">
+                    </div>
+            </div>
+        </section>
+
     </main>
+
+    <footer class="fixed bottom-0 w-full p-4 flex justify-center bg-slate-900/80">
+        <button id="start-demo" class="bg-blue-600 hover:bg-blue-500 px-8 py-3 rounded-lg font-bold transition-all transform hover:scale-105">
+            Iniciar Simulación de Triage
+        </button>
+    </footer>
+
+    <select id="case-selector" class="bg-slate-800 border border-slate-700 rounded px-4 py-2 mr-4 text-sm">
+        <option value="CASE_001">Caso 001: Chikunguya</option>
+        <option value="CASE_002">Caso 002: Oncología</option>
+        <option value="CASE_003">Caso 003: Glioblastoma</option>
+        </select>
+
+    <div id="viz-container" class="hidden fixed inset-0 z-50 bg-slate-900/95 flex flex-col items-center justify-center p-10">
+        <div class="max-w-4xl w-full">
+            <button onclick="document.getElementById('viz-container').classList.add('hidden')" class="mb-4 text-white font-bold bg-red-600 px-4 py-2 rounded">CERRAR VISUALIZACIÓN</button>
+            <img id="asset-viewer" src="" class="w-full rounded-xl shadow-2xl border-4 border-slate-700">
+        </div>
+    </div>
 
     <script src="registry.js"></script>
     <script src="app.js"></script>

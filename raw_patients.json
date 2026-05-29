@@ -1,0 +1,46 @@
+[
+  {
+    "id": "CASE_003",
+    "metadata": { 
+      "title": "Triage Neurooncológico - Glioblastoma", 
+      "region": "Global/Referencia",
+      "complexity": "Muy Alta"
+    },
+    "patient": {
+      "age": "64 años",
+      "narrative": "Paciente masculino de 64 años presenta cuadro de cefalea severa progresiva y alteraciones neurológicas focales de 3 meses de evolución[cite: 880, 904, 906, 908]. Los síntomas progresaron rápidamente y el cuadro fue inicialmente sospechado como un accidente cerebrovascular[cite: 908, 910]. La resonancia magnética (RM) muestra una lesión hiperintensa en el lóbulo parietal compatible con un glioma de alto grado[cite: 911, 917]."
+    },
+    "interactions": [
+      { 
+        "agent": "A", 
+        "content": "Analizando el caso. El paciente presenta una lesión compatible con glioblastoma multiforme, el tumor cerebral primario más agresivo y maligno en adultos[cite: 878, 879]. El cuidado estándar exige la resección quirúrgica máxima seguida de radioterapia y quimioterapia con Temozolomida.", 
+        "target": "lesión hiperintensa en el lóbulo parietal", 
+        "asset": "assets/img/figure1-mri-glioblastoma.png" 
+      },
+      { 
+        "agent": "B", 
+        "content": "De acuerdo con el diagnóstico, pero para el manejo local sugiero evaluar la Radiocirugía Estereotáctica con Gamma Knife (GKRS)[cite: 830, 957]. Esta técnica entrega radiación de baja energía de forma precisa, induciendo la destrucción del tejido tumoral y preservando el tejido cerebral sano circundante.", 
+        "target": "resección quirúrgica máxima", 
+        "asset": "assets/img/figure2-mri-planning.png" 
+      },
+      { 
+        "agent": "A", 
+        "content": "Precaución. Aunque la GKRS es una opción no invasiva, el glioblastoma tiene una naturaleza altamente infiltrativa con márgenes poco claros[cite: 832, 860, 960, 963]. Además, la GKRS conlleva riesgos potenciales como la necrosis por radiación y hemorragia periférica[cite: 832, 963].", 
+        "target": "preservando el tejido cerebral sano", 
+        "asset": null 
+      },
+      { 
+        "agent": "B", 
+        "content": "Punto válido. Sin embargo, su eficacia está comprobada[cite: 963]. Un plan integral que incluya el uso de ácido 5-aminolevulínico (5-ALA) para maximizar la resección inicial identificando el tejido mediante fluorescencia, seguido de GKRS, podría optimizar la supervivencia[cite: 931, 932].", 
+        "target": "naturaleza altamente infiltrativa", 
+        "asset": null 
+      }
+    ],
+    "plan": [
+      "1. Confirmación histológica mediante resección quirúrgica máxima guiada por fluorescencia (5-ALA)[cite: 923, 931, 932].",
+      "2. Inicio de protocolo estándar con radioterapia y quimioterapia (Temozolomida).",
+      "3. Planificación de Radiocirugía Estereotáctica Gamma Knife (GKRS) para tratar de manera localizada el tejido residual[cite: 830, 831, 961].",
+      "4. Monitoreo estricto con RM para vigilar signos de necrosis por radiación o hemorragia periférica[cite: 832, 963]."
+    ]
+  }
+]
